@@ -14,6 +14,7 @@ export const loginAPI = async (id, pw) => {
 
     const data = await res.json();
     const userInfo = {
+      user_idx: data.user_idx,
       user_id: data.user_id,
       user_name: data.user_name,
     };

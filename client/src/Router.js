@@ -23,19 +23,23 @@ const Router = () => {
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/admin' element={
+        <Route path='/admin/:user_idx' element={
           <PrivateRoute>
             <Admin setIsOpen={setIsOpen} isLoading={isLoading} setIsLoading={setIsLoading} />
           </PrivateRoute>
         } />
-        <Route path='/main' element={<Main isLoading={isLoading} setIsLoading={setIsLoading} />} />
+        <Route path='/main/:user_idx' element={
+          <PrivateRoute>
+            <Main isLoading={isLoading} setIsLoading={setIsLoading} /> 
+          </PrivateRoute>
+        } />
         <Route path='/editor/*' element={
           <PrivateRoute>
             <Editor isLoading={isLoading} setIsLoading={setIsLoading} />
           </PrivateRoute>
         } />
         <Route path='/*' element={<NotFound />} />
-        <Route path='/pages/:link/:sublink?' element={<Detail isLoading={isLoading} setIsLoading={setIsLoading} />} />
+        <Route path='/main/:user_idx/pages/:link/:sublink?' element={<Detail isLoading={isLoading} setIsLoading={setIsLoading} />} />
       </Routes>
     </BrowserRouter>
   );

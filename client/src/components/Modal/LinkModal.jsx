@@ -12,6 +12,7 @@ const LinkModal = ({ block_id, idx, setIsOpen, isOpen, LinkDic }) => {
   const [validationError, setValidationError] = useState('');
 
   const { secondList } = useSelector((state) => state.menu);
+  const { user } = useSelector((state) => state.user);
   const blocks = useSelector(state => state.editor.blockList);
 
   const dispatch = useDispatch();
@@ -118,7 +119,7 @@ const LinkModal = ({ block_id, idx, setIsOpen, isOpen, LinkDic }) => {
         return;
       }
     } else if (isInternalLinkChecked && selectedLink) {
-      const link = `/pages/${selectedLink}`;
+      const link = `/main/${user.user_idx}/pages/${selectedLink}`;
       updateBlockLink(link);
     }
     setIsOpen(false);

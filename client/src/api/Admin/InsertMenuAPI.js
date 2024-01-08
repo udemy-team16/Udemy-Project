@@ -1,8 +1,8 @@
-export const InsertMenuAPI = async (title, link, parent_id, new_window) => {
+export const InsertMenuAPI = async (title, link, parent_id, new_window, userID) => {
   try {
     const res = await fetch('/api/insertMenu', {
       method: 'POST',
-      body: JSON.stringify({ title, link, parent_id, new_window }),
+      body: JSON.stringify({ title, link, parent_id, new_window, userID }),
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
     });

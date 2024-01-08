@@ -63,7 +63,7 @@ const Login = () => {
   const handleLogin = async () => {
     const userInfo = await loginAPI(id, pw);
     dispatch(setUser(userInfo));
-    navigate('/admin');
+    navigate(`/admin/${userInfo.user_idx}`);
   };
 
   const handleInvalidLogin = (err) => {

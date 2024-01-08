@@ -13,7 +13,8 @@ const Detail = ({ isLoading, setIsLoading, setError }) => {
   const [data, setData] = useState(null);
   const { secondList } = useSelector((state) => state.menu);
   const { pathname } = useLocation();
-  const link = pathname.slice(7);
+  const link = pathname.split('pages/')[1];
+  const user_idx = pathname.split('pages/')[0].split('main/')[1];
   const filterData = secondList.filter((item) => item.link === link)[0]?.idx;
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Detail = ({ isLoading, setIsLoading, setError }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const blocks = await GetBlocksAPI(filterData);
+        const blocks = await GetBlocksAPI(user_idx, filterData);
         setData(blocks);
       } catch (error) {
         console.error(error);

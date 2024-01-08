@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Nav from 'components/Main/Nav';
 import MainCon from 'components/Main/MainCon';
+
 import 'styles/Main/Main.css';
 
 const Main = ({ isLoading, setIsLoading }) => {
+  const { user_idx } = useParams();
   const [currentCarouselIndex, setCurrentCarouselIndex] = useState(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -37,7 +40,7 @@ const Main = ({ isLoading, setIsLoading }) => {
   return (
     <div className='wrapper'>
       <div className='main_wrap'>
-        <Nav isLoading={isLoading} setIsLoading={setIsLoading} windowWidth={windowWidth} />
+        <Nav isLoading={isLoading} setIsLoading={setIsLoading} windowWidth={windowWidth} user_idx={user_idx} />
         <div className='carousel'>
           <div className='carousel-slider' style={{ transform: `translateX(-${currentCarouselIndex * 100}%)` }}>
             {(windowWidth > 1099 ? images : smallImages).map((image, index) => (

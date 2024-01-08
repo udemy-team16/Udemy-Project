@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 // redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateList } from 'redux/editorSlice';
 import { showAlert } from 'redux/AlertSlice';
 
@@ -28,11 +28,12 @@ const Pagement = ({ setIsOpen, setIsLoading, isLoading }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
   const Page = 5;
-
+  const { user } = useSelector((state) => state.user);
+  
   const getMenu = async () => {
     setIsLoading(true);
     try {
-      const data = await GetMenuAPI();
+      const data = await GetMenuAPI(false, user.user_id);
       setPageList(data.filter((e) => e.parent_id).sort((a, b) => a.parent_id - b.parent_id));
       setParentList(data.filter((e) => e.parent_id == null));
       dispatch(updateList([]));

@@ -19,6 +19,7 @@ import {
 
 export const useEditorActions = () => {
   const blocks = useSelector(state => state.editor.blockList);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   // 에디터 블록 조회
@@ -26,7 +27,7 @@ export const useEditorActions = () => {
     try {
       setIsLoading(true);
       setIsWaiting(true);
-      const data = await GetBlocksAPI(page_idx);
+      const data = await GetBlocksAPI(user.user_idx, page_idx);
 
       if (data === null) {
         Navigate('/notfound');
@@ -96,8 +97,6 @@ export const useEditorActions = () => {
             const dupSaveData = [...new Set(saveTime)];
             setHistoryList(dupSaveData);
           }
-
-
           setIsLoading(false);
           setIsWaiting(false);
         }

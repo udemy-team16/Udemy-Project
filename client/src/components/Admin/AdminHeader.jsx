@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'styles/Admin/AdminHeader.css';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutAPI } from 'api/User/logoutAPI';
 import { showConfirm } from 'redux/AlertSlice'; 
@@ -8,6 +8,7 @@ import { showConfirm } from 'redux/AlertSlice';
 const AdminHeader = () => {
   const [tab, setTab] = useState('menu');
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -46,8 +47,8 @@ const AdminHeader = () => {
       <div className='info_box'>
         <img src="https://cache.wjthinkbig.com/WEB_RESOURCE/WJBOOKCLUB/images/layout_2023/logo.png" onClick={() => onBtnClick('menu')} alt='로고 이미지' />
         <div>
-          <span onClick={() => navigate('/mypage')}>마이페이지</span>
-          <span className='line'>&#124;</span>
+          <span onClick={() => navigate(`/main/${location.pathname.split("/").at(-1)}`)}>메인페이지</span>
+          <span className='line' style={{textAlign: "center"}}>&#124;</span>
           <span onClick={logoutBtn}>로그아웃</span>
         </div>
       </div>

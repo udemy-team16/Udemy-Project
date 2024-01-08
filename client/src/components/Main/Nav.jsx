@@ -3,17 +3,27 @@ import { useMenuActions } from 'hooks/useMenu';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import 'styles/Main/Nav.css';
 
 const Nav = ({ isLoading, setIsLoading, type, windowWidth, screenSize }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { getMenuAction } = useMenuActions();
   const { firstList, secondList } = useSelector((state) => state.menu);
   const [currentMenuIdx, setCurrentMenuIdx] = useState(null);
-  const navigate = useNavigate();
+
+  const user_idx = location.pathname.split('/')[2];
 
   useEffect(() => {
-    getMenuAction(setIsLoading);
+    const fetchMenu = async () => {
+      const hasError = await getMenuAction(setIsLoading, user_idx);
+      if (hasError) {
+        navigate('/');
+      }
+    };
+
+    fetchMenu();
   }, []);
 
   return (
@@ -23,14 +33,14 @@ const Nav = ({ isLoading, setIsLoading, type, windowWidth, screenSize }) => {
           <button>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='moblie_icon' />
           </button>
-          <img className='mobile_header_logo' onClick={() => navigate('/main')} src={logo} alt='로고' />
+          <img className='mobile_header_logo' onClick={() => navigate(`/main/${user_idx}`)} src={logo} alt='로고' />
           <button>
             <FontAwesomeIcon icon={faBars} className='moblie_icon' />
           </button>
         </header>
       ) : (
         <header className='header_wrap' onMouseEnter={() => setCurrentMenuIdx(null)}>
-          <img className='header_wrap_logo' onClick={() => navigate('/main')} src={logo} alt='로고' />
+          <img className='header_wrap_logo' onClick={() => navigate(`/main/${user_idx}`)} src={logo} alt='로고' />
           <div className='header_right'>
             {logoList.map(({ id, src }) => (
               <img key={id} src={src} alt='로고' />
@@ -89,9 +99,9 @@ const Nav = ({ isLoading, setIsLoading, type, windowWidth, screenSize }) => {
                         key={menu.idx}
                         onClick={() => {
                           if (menu.new_window === 1) {
-                            window.open(`/pages/${menu.link}`, '_blank');
+                            window.open(`/main/${user_idx}/pages/${menu.link}`, '_blank');
                           } else {
-                            navigate(`/pages/${menu.link}`);
+                            navigate(`/main/${user_idx}/pages/${menu.link}`);
                           }
                           setCurrentMenuIdx(null);
                         }}
