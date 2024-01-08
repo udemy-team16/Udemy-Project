@@ -9,11 +9,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://woongjin-web-builder.netlify.app"],
     credentials: true,
   })
 );
-app.use('/static/images', express.static('static/images'));
+app.use("/static/images", express.static("static/images"));
 
 const routesPath = path.join(__dirname, "/routes"); // 라우트 파일들이 있는 디렉토리 경로
 
@@ -23,6 +23,6 @@ fs.readdirSync(routesPath).forEach((file) => {
   app.use("/api", route);
 });
 
-app.listen(3001, () => {
+app.listen(5000, () => {
   console.log("서버 실행");
 });

@@ -23,3 +23,12 @@ exports.signUp = async (data) => {
     throw err;
   }
 };
+
+exports.getUserId = async (idx) => {
+  try {
+    const result = await query(`SELECT * FROM user where idx = ?`, idx);
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};

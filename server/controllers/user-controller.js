@@ -46,7 +46,6 @@ const hashCompare = async (inputValue, hash) => {
 
 exports.login = async (req, res) => {
   const { userID, userPW } = req.body;
-
   try {
     const getUser = await userDB.getUser(userID);
     if (!getUser.length) {
@@ -65,6 +64,7 @@ exports.login = async (req, res) => {
     // JWT 생성
     const token = jwt.sign(
       {
+        user_idx: getUser[0].idx,
         userID: getUser[0].userID,
         userName: getUser[0].userName,
       },
@@ -75,9 +75,12 @@ exports.login = async (req, res) => {
     // JWT를 HTTP Only 쿠키로 설정하여 응답
     res.cookie("token", token, {
       httpOnly: true,
+      sameSite: "None",
+      secure: true,
     });
 
     res.status(200).json({
+      user_idx: getUser[0].idx,
       user_id: getUser[0].userID,
       user_name: getUser[0].userName,
       token,
@@ -108,6 +111,7 @@ exports.verifyToken = (req, res) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
+      console.error("JWT verification error:", err);
       res.clearCookie("token");
       result.isLogin = false;
       return res.status(401).json(result);
@@ -116,4 +120,16 @@ exports.verifyToken = (req, res) => {
     result.user = decoded;
     res.status(200).json(result);
   });
+};
+
+exports.getUserId = async (req, res) => {
+  const { idx } = req.params;
+
+  try {
+    const UserId = await userDB.getUserId(idx);
+    res.status(200).json(UserId);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
 };
