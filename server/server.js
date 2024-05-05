@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://woongjin-web-builder.netlify.app"],
+    origin: ["http://localhost:3000", "https://web-builder.store"],
     credentials: true,
   })
 );
